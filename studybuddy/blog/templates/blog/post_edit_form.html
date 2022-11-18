@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if post.owner == user %}
+<div>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button  type="submit" class="btn btn-primary btn-lg">Edit</button>
+    </form>
+</div>
+
+{% else %}
+    <div>
+        <p>You can only alter your posts</p>
+    </div>
+{% endif %}
+
+{% endblock %}

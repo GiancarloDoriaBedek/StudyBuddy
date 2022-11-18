@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div>
+    <br>
+    {% for board in object_list %}
+
+    <div class="card">
+        <div class="card-header">
+            <a class="text-decoration-none" href="{% url 'posts' board.slug %}">
+                <h4 class="card-title">{{ board.title }}</h4>
+            </a>
+        </div>
+
+        <div class="card-body">
+          <p class="card-text">{{ board.text }}</p>
+        </div>
+
+        <div class="card-footer align-text-bottom">
+            <small class="text-black-50">
+                {% if board.posted_timestamp != board.updated_timestamp %}
+                    Edited: {{ board.updated_timestamp }}
+                {% else %}
+                    {{ board.posted_timestamp }}
+
+                {% endif %}
+            </small>
+        </div>
+    </div>
+
+    <br><br>
+    {% endfor %}
+</div>
+
+{% endblock %}

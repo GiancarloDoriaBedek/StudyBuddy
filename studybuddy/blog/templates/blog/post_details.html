@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div>
+    <div>
+        <br>
+        <div class="card">
+            <div class="card-header">
+                {% if post.owner == user %}
+                <a class="text-decoration-none" href="{% url 'post-edit' board.slug post.pk %}">
+                    <h4 class="card-title">{{ post.title }}</h4>
+                </a>
+
+                {% else %}
+                <a class="text-decoration-none" href="{% url 'post-details' board.slug post.pk %}">
+                    <h4 class="card-title">{{ post.title }}</h4>
+                </a>
+                {% endif %}
+            </div>
+    
+            <div class="card-body">
+              <p class="card-text">{{ post.text }}</p>
+            </div>
+    
+            <div class="card-footer align-text-bottom">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <a class="text-decoration-none" href="{% url 'user-page' post.owner.id %}">
+                            @{{ post.owner }}
+                        </a>
+                    </div>
+                    <div>
+                        <small class="text-black-50">
+                            {% if post.posted_timestamp != post.updated_timestamp %}
+                                Edited: {{ post.updated_timestamp }}
+                            {% else %}
+                                {{ post.posted_timestamp }}
+    
+                            {% endif %}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+
+    {% for comment in object_list %}
+
+    <div class="card">
+
+        <div class="card-body">
+          <p class="card-text">{{ comment.text }}</p>
+        </div>
+
+        <div class="card-footer align-text-bottom">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <a class="text-decoration-none" href="{% url 'user-page' comment.owner.id %}">
+                        @{{ comment.owner }}
+                    </a>
+                </div>
+                <div>
+                    <small class="text-black-50">
+                        {{ comment.posted_timestamp }}
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    {% endfor %}
+
+    <div>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.text }}
+            <button type="submit">Comment</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+    <br>
+    <a href="{% url 'posts-create' board.slug %}">
+        <button  type="button" class="btn btn-primary btn-lg">Create New Post</button>
+    </a>
+    <br><br>
+
+    {% for post in object_list %}
+    <div class="card">
+        <div class="card-header">
+            <a class="text-decoration-none" href="{% url 'post-details' board.slug post.id %}">
+                <h4 class="card-title">{{ post.title }}</h4>
+            </a>
+        </div>
+
+        <div class="card-body">
+          <p class="card-text">{{ post.text }}</p>
+        </div>
+
+        <div class="card-footer align-text-bottom">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <a class="text-decoration-none" href="{% url 'user-page' post.owner.id %}">
+                        @{{ post.owner }}
+                    </a>
+                </div>
+                <div>
+                    <small class="text-black-50">
+                        {% if post.posted_timestamp != post.updated_timestamp %}
+                            Edited: {{ post.updated_timestamp }}
+
+                        {% else %}
+                            {{ post.posted_timestamp }}
+
+                        {% endif %}
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    {% endfor %}
+
+</div>
+{% endblock %}
